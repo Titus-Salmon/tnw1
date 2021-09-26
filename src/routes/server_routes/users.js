@@ -7,6 +7,8 @@ const jwt = require("jsonwebtoken");
 const hash_t0d = process.env.BCRYPT_SECRET; //--t0d
 
 router.get(`/`, async (req, res) => {
+  //"-passwordHash" is used so that the password hash won't show in the results;
+  //conversely, you can add the columns (separated by space) that you DO want to see
   const userList = await User.find().select("-passwordHash");
 
   if (!userList) {

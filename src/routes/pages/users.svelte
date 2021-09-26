@@ -15,11 +15,11 @@
       .then((jsonRes) => console.log(jsonRes));
   };
 
-  const showUsersByIDs = async () => {
-    fetch(`/users/?categories=${userId}`)
-      .then((rawRes) => rawRes.json())
-      .then((jsonRes) => console.log(jsonRes));
-  };
+  // const showUsersByIDs = async () => {
+  //   fetch(`/users/?categories=${userId}`)
+  //     .then((rawRes) => rawRes.json())
+  //     .then((jsonRes) => console.log(jsonRes));
+  // };
 
   let userName;
   let userEmail;
@@ -154,7 +154,7 @@
         <button on:click="{showUsersById}">showUsersById</button>
       </div>
 
-      <div style="text-align:center;">
+      <!-- <div style="text-align:center;">
         <label for="showUsersByIDs">Show Users By IDs</label>
       </div>
       <div style="text-align:center">
@@ -167,7 +167,7 @@
       </div>
       <div style="text-align:center">
         <button on:click="{showUsersByIDs}">showUsersByIDs</button>
-      </div>
+      </div> -->
     </div>
 
     <!-- //////////////addUser//////////////////////////// -->
