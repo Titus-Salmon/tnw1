@@ -4,8 +4,6 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const hash_t0d = process.env.BCRYPT_SECRET; //--t0d
-
 router.get(`/`, async (req, res) => {
   //"-passwordHash" is used so that the password hash won't show in the results;
   //conversely, you can add the columns (separated by space) that you DO want to see
@@ -29,11 +27,14 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  console.log(`hash_t0d==> ${hash_t0d}`);
+  console.log(`process.env.BCRYPT_SECRET==> ${process.env.BCRYPT_SECRET}`);
   let user = new User({
     name: req.body.name,
     email: req.body.email,
-    passwordHash: bcrypt.hashSync(req.body.password, parseInt(hash_t0d)),
+    passwordHash: bcrypt.hashSync(
+      req.body.password,
+      parseInt(process.env.BCRYPT_SECRET)
+    ),
     phone: req.body.phone,
     isAdmin: req.body.isAdmin,
     street: req.body.street,
@@ -53,7 +54,10 @@ router.put("/:id", async (req, res) => {
   const userExist = await User.findById(req.params.id);
   let newPassword;
   if (req.body.password) {
-    newPassword = bcrypt.hashSync(req.body.password, parseInt(hash_t0d));
+    newPassword = bcrypt.hashSync(
+      req.body.password,
+      parseInt(process.env.BCRYPT_SECRET)
+    );
   } else {
     newPassword = userExist.passwordHash;
   }
@@ -82,7 +86,7 @@ router.put("/:id", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
-  const secret = process.env.secret;
+  const secret = process.env.BCRYPT_SECRET;
   if (!user) {
     return res.status(400).send("The user not found");
   }
@@ -107,7 +111,10 @@ router.post("/register", async (req, res) => {
   let user = new User({
     name: req.body.name,
     email: req.body.email,
-    passwordHash: bcrypt.hashSync(req.body.password, parseInt(hash_t0d)),
+    passwordHash: bcrypt.hashSync(
+      req.body.password,
+      parseInt(process.env.BCRYPT_SECRET)
+    ),
     phone: req.body.phone,
     isAdmin: req.body.isAdmin,
     street: req.body.street,
@@ -142,8 +149,11 @@ router.delete("/:id", (req, res) => {
 });
 
 router.get(`/get/count`, async (req, res) => {
-  const userCount = await User.countDocuments((count) => count);
-
+  // const userCount = await User.countDocuments((count) => count);
+  //^//DO NOT USE THE CALLBACK HERE ((count) => count), it will give the error of MongooseError: Query was already executed: Product.countDocuments({})
+  //see https://stackoverflow.com/questions/69153798/countdocuments-is-not-working-in-api-call
+  //v//use this instead:
+  const userCount = await User.countDocuments();
   if (!userCount) {
     res.status(500).json({ success: false });
   }

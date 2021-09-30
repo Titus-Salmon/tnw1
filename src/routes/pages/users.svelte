@@ -1,8 +1,10 @@
 <script>
   import { onMount } from "svelte";
 
+  let apiURL = process.env.API_URL;
+
   const showAllUsers = async () => {
-    fetch("/users")
+    fetch(`${apiURL}/users`)
       .then((rawRes) => rawRes.json())
       .then((jsonRes) => console.log(jsonRes));
   };
@@ -10,7 +12,7 @@
   let userId;
 
   const showUsersById = async () => {
-    fetch(`/users/${userId}`)
+    fetch(`${apiURL}/users/${userId}`)
       .then((rawRes) => rawRes.json())
       .then((jsonRes) => console.log(jsonRes));
   };
@@ -31,7 +33,7 @@
   let userZip;
   let userCity;
   let userCountry;
-  let featUsersNum;
+  let userUnhasedPW;
 
   onMount(() => {
     userId = "userId";
@@ -45,7 +47,7 @@
     userZip = "userZip";
     userCity = "userCity";
     userCountry = "userCountry";
-    featUsersNum = "featUsersNum";
+    userUnhasedPW = "userUnhasedPW";
   });
 
   const addUser = async () => {
@@ -121,8 +123,19 @@
       });
   };
 
-  const getFeatUsers = async () => {
-    fetch(`/users/get/featured/${featUsersNum}`)
+  const userLogin = async () => {
+    fetch(`/users/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: userEmail,
+        password: userUnhasedPW,
+        // userId: userId,
+        // isAdmin: userIsAdmin,
+      }),
+    })
       .then((rawRes) => rawRes.json())
       .then((jsonRes) => console.log(jsonRes));
   };
@@ -380,21 +393,45 @@
         <button on:click="{countUsers}">countUsers</button>
       </div>
     </div>
-    <!-- //////////////getFeatUsers//////////////////////////// -->
+    <!-- //////////////userLogin//////////////////////////// -->
     <div>
       <div style="text-align:center;">
-        <label for="getFeatUsers">Featured Users</label>
+        <label for="userLogin">User Login</label>
       </div>
       <div style="text-align:center">
         <input
           type="text"
-          id="getFeatUsers"
-          name="getFeatUsers"
+          id="userEmail"
+          name="userEmail"
           required
-          bind:value="{featUsersNum}" />
+          bind:value="{userEmail}" />
       </div>
       <div style="text-align:center">
-        <button on:click="{getFeatUsers}">getFeatUsers</button>
+        <input
+          type="text"
+          id="userUnhasedPW"
+          name="userUnhasedPW"
+          required
+          bind:value="{userUnhasedPW}" />
+      </div>
+      <!-- <div style="text-align:center">
+        <input
+          type="text"
+          id="userId"
+          name="userId"
+          required
+          bind:value="{userId}" />
+      </div>
+      <div style="text-align:center">
+        <input
+          type="text"
+          id="userIsAdmin"
+          name="userIsAdmin"
+          required
+          bind:value="{userIsAdmin}" />
+      </div> -->
+      <div style="text-align:center">
+        <button on:click="{userLogin}">userLogin</button>
       </div>
     </div>
   </div>

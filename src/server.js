@@ -16,7 +16,12 @@ const logger = require("morgan"); //t0d
 const fileUpload = require("express-fileupload");
 const mongoose = require("mongoose"); //t0d
 
+const api = process.env.API_URL; //t0d
+
 const { PORT, NODE_ENV } = process.env;
+
+// const api = process.env.API_URL; //t0d
+
 const dev = NODE_ENV === "development";
 console.log(`process.env.PORT==> ${process.env.PORT}`);
 
@@ -94,9 +99,9 @@ mongoose
 //v//https://sapper.svelte.dev/docs#Server_routes says this block should be at end of server.js, so leaving it there//t0d
 
 // '/categories' acts as a trigger route to use pure Express and ignore Sapper
-app.use("/categories", categoriesRouter);
-app.use("/products", productsRouter);
-app.use("/users", usersRouter);
+app.use(`${api}/categories`, categoriesRouter);
+app.use(`${api}/products`, productsRouter);
+app.use(`${api}/users`, usersRouter);
 
 app // You can also use Polka
   .use(
