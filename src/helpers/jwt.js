@@ -13,6 +13,13 @@ function authJwt() {
       { url: /\/api\/v1\/categories(.*)/, methods: ["GET", "OPTIONS"] },
       `${api}/users/login`,
       `${api}/users/register`,
+      `/`,
+      { url: /\/pages\/(.*)/ },
+      { url: /\/client\/(.*)/ },
+      { url: /\/img\/(.*)/ },
+      { url: /\/manifest.json/ },
+      { url: /\/global.css/ },
+      { url: /\/logo-192.png/ },
     ],
   });
 }

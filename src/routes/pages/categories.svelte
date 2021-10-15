@@ -1,6 +1,8 @@
 <script>
   import { onMount } from "svelte";
 
+  let apiURL = process.env.API_URL;
+
   //if you want to fetch a specific category id, use the following: fetch("/categories/id"), i.e.:
   //fetch("/categories/613c35d6fdb64edf5397071a")
   // onMount(async () => {
@@ -10,7 +12,7 @@
   // });
 
   const showAllCategories = async () => {
-    fetch("/categories")
+    fetch(`${apiURL}/categories`)
       .then((rawRes) => rawRes.json())
       .then((jsonRes) => console.log(jsonRes));
   };
@@ -19,7 +21,7 @@
 
   const showCategoriesById = async () => {
     console.log(`catId==> ${catId}`);
-    fetch(`/categories/${catId}`)
+    fetch(`${apiURL}/categories/${catId}`)
       .then((rawRes) => rawRes.json())
       .then((jsonRes) => console.log(jsonRes));
   };
@@ -29,7 +31,7 @@
   let catColor;
 
   const addCategory = async () => {
-    fetch(`/categories`, {
+    fetch(`${apiURL}/categories`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -48,7 +50,7 @@
   };
 
   const updateCategory = async () => {
-    fetch(`/categories/${catId}`, {
+    fetch(`${apiURL}/categories/${catId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -67,7 +69,7 @@
   };
 
   const deleteCategory = async () => {
-    fetch(`/categories/${catId}`, {
+    fetch(`${apiURL}/categories/${catId}`, {
       method: "DELETE",
     })
       .then((rawRes) => rawRes.json())

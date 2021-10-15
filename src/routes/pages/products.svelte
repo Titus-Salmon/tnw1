@@ -1,6 +1,8 @@
 <script>
   import { onMount } from "svelte";
 
+  let apiURL = process.env.API_URL;
+
   //if you want to fetch a specific category id, use the following: fetch("/products/id"), i.e.:
   //fetch("/products/613c35d6fdb64edf5397071a")
   // onMount(async () => {
@@ -10,7 +12,7 @@
   // });
 
   const showAllProducts = async () => {
-    fetch("/products")
+    fetch(`${apiURL}/products`)
       .then((rawRes) => rawRes.json())
       .then((jsonRes) => console.log(jsonRes));
   };
@@ -18,13 +20,13 @@
   let prodId;
 
   const showProductsById = async () => {
-    fetch(`/products/${prodId}`)
+    fetch(`${apiURL}/products/${prodId}`)
       .then((rawRes) => rawRes.json())
       .then((jsonRes) => console.log(jsonRes));
   };
 
   const showProductsByIDs = async () => {
-    fetch(`/products/?categories=${prodId}`)
+    fetch(`${apiURL}/products/?categories=${prodId}`)
       .then((rawRes) => rawRes.json())
       .then((jsonRes) => console.log(jsonRes));
   };
@@ -61,7 +63,7 @@
   });
 
   const addProduct = async () => {
-    fetch(`/products`, {
+    fetch(`${apiURL}/products`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -89,7 +91,7 @@
   };
 
   const updateProduct = async () => {
-    fetch(`/products/${prodId}`, {
+    fetch(`${apiURL}/products/${prodId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -118,7 +120,7 @@
   };
 
   const deleteProduct = async () => {
-    fetch(`/products/${prodId}`, {
+    fetch(`${apiURL}/products/${prodId}`, {
       method: "DELETE",
     })
       .then((rawRes) => rawRes.json())
@@ -129,7 +131,7 @@
   };
 
   const countProducts = async () => {
-    fetch(`/products/get/count`)
+    fetch(`${apiURL}/products/get/count`)
       .then((rawRes) => rawRes.json())
       .then((jsonRes) => console.log(jsonRes))
       .catch((error) => {
@@ -138,7 +140,7 @@
   };
 
   const getFeatProds = async () => {
-    fetch(`/products/get/featured/${featProdsNum}`)
+    fetch(`${apiURL}/products/get/featured/${featProdsNum}`)
       .then((rawRes) => rawRes.json())
       .then((jsonRes) => console.log(jsonRes));
   };
@@ -171,7 +173,7 @@
       </div>
 
       <div style="text-align:center;">
-        <label for="showProductsByIDs">Show Products By IDs</label>
+        <label for="showProductsByIDs">Show Products By Category IDs</label>
       </div>
       <div style="text-align:center">
         <input

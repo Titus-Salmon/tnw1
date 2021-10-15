@@ -51,7 +51,7 @@
   });
 
   const addUser = async () => {
-    fetch(`/users`, {
+    fetch(`${apiURL}/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -77,7 +77,7 @@
   };
 
   const updateUser = async () => {
-    fetch(`/users/${userId}`, {
+    fetch(`${apiURL}/users/${userId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -104,7 +104,7 @@
   };
 
   const deleteUser = async () => {
-    fetch(`/users/${userId}`, {
+    fetch(`${apiURL}/users/${userId}`, {
       method: "DELETE",
     })
       .then((rawRes) => rawRes.json())
@@ -115,7 +115,7 @@
   };
 
   const countUsers = async () => {
-    fetch(`/users/get/count`)
+    fetch(`${apiURL}/users/get/count`)
       .then((rawRes) => rawRes.json())
       .then((jsonRes) => console.log(jsonRes))
       .catch((error) => {
@@ -124,7 +124,7 @@
   };
 
   const userLogin = async () => {
-    fetch(`/users/login`, {
+    fetch(`${apiURL}/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -132,8 +132,8 @@
       body: JSON.stringify({
         email: userEmail,
         password: userUnhasedPW,
-        // userId: userId,
-        // isAdmin: userIsAdmin,
+        userId: userId,
+        isAdmin: userIsAdmin,
       }),
     })
       .then((rawRes) => rawRes.json())

@@ -7,6 +7,9 @@ import categoriesRouter from "./routes/server_routes/categories";
 import productsRouter from "./routes/server_routes/products";
 import usersRouter from "./routes/server_routes/users";
 
+import authJwt from "./helpers/jwt";
+import errorHandler from "./helpers/error-handler";
+
 const app = express(); //t0d
 const dotenv = require("dotenv"); //t0d
 const uuid = require("uuid-v4"); //t0d
@@ -15,6 +18,12 @@ const cookieParser = require("cookie-parser"); //t0d
 const logger = require("morgan"); //t0d
 const fileUpload = require("express-fileupload");
 const mongoose = require("mongoose"); //t0d
+
+// require('dotenv/config');
+const morgan = require("morgan"); //from ecommerce tut --t0d
+// const authJwt = require("./helpers/jwt");
+// const errorHandler = require("./helpers/error-handler");
+const cors = require("cors"); //from ecommerce tut --t0d
 
 const api = process.env.API_URL; //t0d
 
@@ -26,6 +35,12 @@ const dev = NODE_ENV === "development";
 console.log(`process.env.PORT==> ${process.env.PORT}`);
 
 dotenv.config(); //t0d
+
+app.use(morgan("tiny")); //from ecommerce tut --t0d
+app.use(authJwt()); //from ecommerce tut --t0d
+app.use(errorHandler); //from ecommerce tut --t0d
+app.use(cors()); //from ecommerce tut --t0d
+app.options("*", cors()); //from ecommerce tut --t0d
 
 app.use(
   express.json({
